@@ -2,7 +2,7 @@ terraform {
   backend "s3" {
       bucket         = "my-terraform-state-bucket"
       key            = "path/to/my/terraform.tfstate"
-      region         = var.region
+      region         = "us-east-1"
   }
 }
 provider "aws" {
