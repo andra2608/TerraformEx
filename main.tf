@@ -1,3 +1,10 @@
+terraform {
+  backend "s3" {
+      bucket         = "my-terraform-state-bucket"
+      key            = "path/to/my/terraform.tfstate"
+      region         = var.region
+  }
+}
 provider "aws" {
   region = var.region
 }

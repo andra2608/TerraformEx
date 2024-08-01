@@ -9,7 +9,7 @@ pipeline {
     stages{
         stage('checkout') {
             steps {
-                sh 'git clone https://github.com/Johithkrishna0110/Terraform.git'
+                git branch: 'main', url: 'https://github.com/Johithkrishna0110/Terraform.git'
             }
         }
 
