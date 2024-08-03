@@ -2,45 +2,57 @@ pipeline {
     agent any
 
     environment {
+        AWS_REGION = 'us-east-1' // Replace with your desired region
         AWS_ACCESS_KEY_ID = credentials('accesskey')
         AWS_SECRET_ACCESS_KEY = credentials('secretkey')
     }
 
-    stages{
-        stage('checkout') {
+    stages {
+        stage('Checkout') {
             steps {
+                // Checkout the code from your version control
                 git branch: 'main', url: 'https://github.com/Johithkrishna0110/Terraform.git'
             }
         }
 
-        stage('terraform_init') {
+        stage('Terraform Init') {
             steps {
-                sh 'terraform init'
+                script {
+                    // Initialize Terraform
+                    sh 'terraform init'
+                }
             }
         }
 
-        stage('terraform_plan') {
+        stage('Terraform Plan') {
             steps {
-                sh 'terraform plan'
-            }
-        }
-        
-        stage('terraform_format') {
-            steps {
-                sh 'terraform fmt'
+                script {
+                    // Create a Terraform plan
+                    sh 'terraform plan -out=tfplan'
+                }
             }
         }
 
-        stage('terraform_validate') {
+        stage('Terraform Apply') {
             steps {
-                sh 'terraform validate'
+                script {
+                    // Apply the Terraform plan
+                    sh 'terraform apply -auto-approve tfplan'
+                }
             }
         }
+    }
 
-        stage('terraform_apply') {
-            steps {
-                sh 'terraform apply'
-            }
+    post {
+        always {
+            // Clean up workspace or perform any necessary cleanup
+            cleanWs()
+        }
+        success {
+            echo 'Terraform applied successfully!'
+        }
+        failure {
+            echo 'Terraform apply failed.'
         }
     }
 }
