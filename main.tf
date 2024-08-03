@@ -9,7 +9,7 @@ terraform {
 
 provider "aws" {
   region = var.region
-}
+} 
 
 resource "aws_vpc" "main" {
   cidr_block = var.vpc_cidr
@@ -120,7 +120,7 @@ resource "aws_instance" "public_instance" {
   instance_type = var.instance_type
   ami = var.public_instance_ami
   subnet_id = aws_subnet.public.id
-  security_groups = [aws_security_group.public_sg]
+  security_groups = [aws_security_group.public_sg.id]
 
   tags = {
     Name = "PublicInstance"
@@ -131,7 +131,7 @@ resource "aws_instance" "private_instance" {
   instance_type = var.instance_type
   ami = var.private_instance_ami
   subnet_id = aws_subnet.private.id
-  security_groups = [aws_security_group.private_sg]
+  security_groups = [aws_security_group.private_sg.id]
 
   tags = {
     Name = "PrivateInstance"
